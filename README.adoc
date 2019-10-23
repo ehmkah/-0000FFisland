@@ -1,0 +1,75 @@
+## container starter
+### Docker Netzwerk öffnen
+docker network create example
+### Container starten
+Sind erreichbar über nextcloud und elastic
+
+docker run --net example  --name elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+
+docker run --net example --name nextcloud -p 8080:80 nextcloud
+
+### shell für container öffnen
+
+docker exec -i -t nextcloud /bin/bash
+
+Login für zB Etherpad:
+docker exec -i -t nextcloud -u www-data /bin/bash
+
+## elasticsearch index anlegen
+curl -X PUT http://localhost:9200/ostmann 
+
+
+FRAGEN:
+- warum wird nicht indiziert? Wo stehen die Fehler
+
+Browser:
+
+localhost:8080
+
+MARKDOWN
+dillinger.io
+
+
+ASCIIDOCTOR
+https://asciidoctor.org
+
+
+ETHERPAD
+Settings -> Additional Settings -> Enable Etherpad
+Etherpad Host: “https://etherpad.wikimedia.org”
+
+MIME-type einstellen:
+Terminal/SFTP
+
+Kopieren von “mimetypemapping.json”
+cd /var/www/html/config
+cp ../resources/config/mimetypemapping.dist.json .
+
+Umbenennen:
+/var/www/html/config# mv mimetypemapping.dist.json mimetypemapping.json 
+
+g. Klammer löschen:
+sed 's/}//' mimetypemapping.json  >neu
+
+Eintrag ans Ende hinzufügen, an Datei “neu” anfügen
+echo ‘,”pad": ["application/x-ownpad”]’ >> neu 
+
+Eintrag ans ende hinzufügen, an Datei “neu” anfügen
+echo '"calc": ["application/x-ownpad"]'>> neu 
+
+Eintrag ans ende hinzufügen, an Datei “neu” anfügen
+echo } >> neu
+
+Datei umbenennen
+cp neu mimetypemapping.json
+
+Loggin als www-data:
+docker exec -i -t nextcloud -u www-data /bin/bash
+
+Pfad:
+cd /var/www/html 
+
+Cmd ausführen:
+php occ files:scan -all
+
+https://github.com/otetard/ownpad/blob/master/README.md
