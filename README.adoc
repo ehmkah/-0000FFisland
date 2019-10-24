@@ -4,7 +4,7 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 
 ## Nextcloud im Container starten
 
-* Docker Netzwerk bereitstellen - `docker network create example
+* Docker Netzwerk bereitstellen - `docker network create example`
 * nextcloud starten - `docker run --net example --name nextcloud -p 8080:80 nextcloud:16-apache`
 * Hinweis: Innerhalb des Docker Netzwerks ist die nextcloud Instanz unter nextcloud erreichbar
 * Browser öffnetn mit http://localhost:8080/
@@ -18,10 +18,9 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 
 ### Rahmenbedingungen
 
-! Fulltextsearch plugin für nextcloud gibt es nur für nextcloud 16.x
-! Fulltextsearch plugin für nextcloud braucht elastic-Search 7.3.2 (oder ne andere 7)
-! Elasticsearch muss das ingest plugin installiert haben (ingest wandelt
-Binärformat in JSON um, damit elasticsearch dieses JSON indizieren kann)
+* Fulltextsearch plugin für nextcloud gibt es nur für nextcloud 16.x
+* Fulltextsearch plugin für nextcloud braucht elastic-Search 7.3.2 (oder ne andere 7)
+* Elasticsearch muss das http://https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest-attachment.html[ingest-plugin] installiert haben (ingest wandelt Binärformat in JSON um, damit elasticsearch dieses JSON indizieren kann)
 
 ### Vorgehen (lokal)
 
