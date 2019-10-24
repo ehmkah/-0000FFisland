@@ -1,38 +1,57 @@
-## container starter
-### Docker Netzwerk öffnen
-docker network create example
-### Container starten
-Sind erreichbar über nextcloud und elastic
+# Nextcloud Howto für 0000ffIsland
 
-docker run --net example  --name elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 
-docker run --net example --name nextcloud -p 8080:80 nextcloud
+## Nextcloud im Container starten
+
+* Docker Netzwerk bereitstellen - `docker network create example
+* nextcloud starten - `docker run --net example --name nextcloud -p 8080:80 nextcloud:16-apache`
+* Hinweis: Innerhalb des Docker Netzwerks ist die nextcloud Instanz unter nextcloud erreichbar
+* Browser öffnetn mit http://localhost:8080/
 
 ### shell für container öffnen
 
-docker exec -i -t nextcloud /bin/bash
+* Shell als root - `docker exec -i -t nextcloud /bin/bash`
+* Shell als www-data (z.B. für Etherpad siehe unten) - `docker exec -i -t nextcloud -u www-data /bin/bash`
 
-Login für zB Etherpad:
-docker exec -i -t nextcloud -u www-data /bin/bash
+## Konfiguration Volltextsuche
 
-## elasticsearch index anlegen
-curl -X PUT http://localhost:9200/ostmann 
+### Rahmenbedingungen
 
+! Fulltextsearch plugin für nextcloud gibt es nur für nextcloud 16.x
+! Fulltextsearch plugin für nextcloud braucht elastic-Search 7.3.2 (oder ne andere 7)
+! Elasticsearch muss das ingest plugin installiert haben (ingest wandelt
+Binärformat in JSON um, damit elasticsearch dieses JSON indizieren kann)
 
-FRAGEN:
-- warum wird nicht indiziert? Wo stehen die Fehler
+### Vorgehen (lokal)
 
-Browser:
+. Elasticsearch mit Plugin ingest konfigurieren und starten
+.. Ins Verzeichnis wechsel wo angepastes Dockerfile liegt - `cd elastic`
+.. Angepasstes Dockerimage bauen - `docker build -t elastic_blau .`
+.. Prüfen, ob Image erfolgreich vorliegt - `docker images` (Im Output sollte irgendwo elastic_blau stehen)
+.. Angepastes Image starten - `docker run --net example  --name elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elastic_blau`
+.. Prüfen, ob elasticsearch läuft `http:localhost:9200/ öffnen
 
-localhost:8080
+. Konfigurieren Fulltext-plugin in nextcloud
+.. Folgende Plugins installieren `full text search`, `Full text search - Elasticsearch Platform`, `	Full text search - Files`
+.. Fulltext-plugin konfigurieren
+... Adresse Servlet => `http://elastic:9200`
+... Index => `nextcloud` (Name ist egal, Index wird einfach neu angelegt)
+... Quellen => Lokale Dateien anhacken
+.. Konfiguration prüfen
+... einloggen in nextcloud instanz shell - `docker exec -u www-data -i -t nextcloud /bin/bash`
+... Testen der Fulltextsuche - `php occ fulltextsearch:test`
+... Indizieren auslösen - php occ `fulltextsearch:index`
+... Weitere Kommandos - https://github.com/nextcloud/fulltextsearch/wiki/Commands
 
-MARKDOWN
-dillinger.io
+### Unklar
 
+* Wann wird automatisch indiziert, oder muss das immer manuel erfolgen => crontab einrichten
+* Sicherheitsüberlegungen
 
-ASCIIDOCTOR
-https://asciidoctor.org
+## Konfiguration Etherpad
 
+Haben wir mal ausprobiert, aber hier sind nur noch Gedankenstützen
 
 ETHERPAD
 Settings -> Additional Settings -> Enable Etherpad
@@ -73,3 +92,15 @@ Cmd ausführen:
 php occ files:scan -all
 
 https://github.com/otetard/ownpad/blob/master/README.md
+
+
+## TODO
+
+* Entscheidung, ob Elasticsearch selber hosten, oder als Service einkaufen
+
+## Anhang
+
+### Markupsprachen
+
+* MARKDOWN - dillinger.io
+* ASCIIDOCTOR - https://asciidoctor.org
