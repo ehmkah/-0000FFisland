@@ -7,7 +7,7 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 * Docker Netzwerk bereitstellen - `docker network create example`
 * nextcloud starten - `docker run --net example --name nextcloud -p 8080:80 nextcloud:16-apache`
 * Hinweis: Innerhalb des Docker Netzwerks ist die nextcloud Instanz unter nextcloud erreichbar
-* Browser öffnetn mit http://localhost:8080/
+* Browser öffnen mit http://localhost:8080/
 
 ### shell für container öffnen
 
@@ -37,16 +37,20 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 ... Adresse Servlet => `http://elastic:9200`
 ... Index => `nextcloud` (Name ist egal, Index wird einfach neu angelegt)
 ... Quellen => Lokale Dateien anhacken
+... Suchlupe aktivieren
 .. Konfiguration prüfen
 ... einloggen in nextcloud instanz shell - `docker exec -u www-data -i -t nextcloud /bin/bash`
 ... Testen der Fulltextsuche - `php occ fulltextsearch:test`
+... Eine Textdatei anlegen mit einigen Worten, die gefunden werden kann
 ... Indizieren auslösen - php occ `fulltextsearch:index`
 ... Weitere Kommandos - https://github.com/nextcloud/fulltextsearch/wiki/Commands
+... Suche in nextcloud nach einem Inhalt der Datei
 
 ### Unklar
 
 * Wann wird automatisch indiziert, oder muss das immer manuel erfolgen => crontab einrichten
 * Sicherheitsüberlegungen
+* Welche Binärformate werden unterstützt
 
 ## Konfiguration Etherpad
 
