@@ -39,9 +39,9 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 ... Quellen => Lokale Dateien anhacken
 ... Suchlupe aktivieren
 .. Konfiguration prüfen
+... In Nexcloud Webinterface eine Textdatei anlegen mit einigen Worten, die gefunden werden kann
 ... einloggen in nextcloud instanz shell - `docker exec -u www-data -i -t nextcloud /bin/bash`
 ... Testen der Fulltextsuche - `php occ fulltextsearch:test`
-... Eine Textdatei anlegen mit einigen Worten, die gefunden werden kann
 ... Indizieren auslösen - php occ `fulltextsearch:index`
 ... Weitere Kommandos - https://github.com/nextcloud/fulltextsearch/wiki/Commands
 ... Suche in nextcloud nach einem Inhalt der Datei
