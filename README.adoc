@@ -29,7 +29,7 @@ Beschreibt, wie lokal mit Docker ein paar Dinge ausprobiert werden können.
 .. Angepasstes Dockerimage bauen - `docker build -t elastic_blau .`
 .. Prüfen, ob Image erfolgreich vorliegt - `docker images` (Im Output sollte irgendwo elastic_blau stehen)
 .. Angepastes Image starten - `docker run --net example  --name elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elastic_blau`
-.. Prüfen, ob elasticsearch läuft `http:localhost:9200/ öffnen
+.. Prüfen, ob elasticsearch läuft - http://localhost:9200/ öffnen
 
 . Konfigurieren Fulltext-plugin in nextcloud
 .. Folgende Plugins installieren `full text search`, `Full text search - Elasticsearch Platform`, `	Full text search - Files`
